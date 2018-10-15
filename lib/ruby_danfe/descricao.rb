@@ -36,14 +36,13 @@ module RubyDanfe
         descricao += "* Vlr: #{det.css('ICMS/*/vICMSST').text}"
       end
 
-      if need_cest(det)
-        descricao += LINEBREAK
-        descricao += "CEST: #{det.css('prod/CEST').text}"
-      end
-
       if need_cEAN(det)
         descricao += LINEBREAK
         descricao += "EAN: #{det.css('prod/cEAN').text}"
+      end
+
+      if need_cest(det)
+        descricao += "#{need_cEAN(det) ? " - " : LINEBREAK}CEST: #{det.css('prod/CEST').text}"
       end
 
       descricao
