@@ -36,6 +36,16 @@ module RubyDanfe
         descricao += "* Vlr: #{det.css('ICMS/*/vICMSST').text}"
       end
 
+      if need_cest(det)
+        descricao += LINEBREAK
+        descricao += "CEST: #{det.css('prod/CEST').text}"
+      end
+
+      if need_cEAN(det)
+        descricao += LINEBREAK
+        descricao += "EAN: #{det.css('prod/cEAN').text}"
+      end
+
       descricao
     end
 
@@ -56,5 +66,12 @@ module RubyDanfe
       det.css('ICMS/*/vBCST').text.to_i > 0
     end
 
+    def self.need_cest(det)
+      !det.css('prod/CEST').text.empty?
+    end
+
+    def self.need_cEAN(det)
+      !det.css('prod/cEAN').text.empty?
+    end
   end
 end

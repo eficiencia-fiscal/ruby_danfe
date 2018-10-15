@@ -62,7 +62,7 @@
             <det nItem="1">
                 <prod>
                     <cProd>00005</cProd>
-                    <cEAN></cEAN>
+                    <cEAN>789456123</cEAN>
                     <xProd>LIVRO POR LIT GRAMATICA PROD TEXTO 3a SERIE   ALUNO</xProd>
                     <NCM>49019900</NCM>
                     <CFOP>6101</CFOP>
@@ -108,7 +108,7 @@
             <det nItem="1">
                 <prod>
                     <cProd>00005</cProd>
-                    <cEAN></cEAN>
+                    <cEAN>987654321</cEAN>
                     <xProd>LIVRO POR LIT GRAMATICA PROD TEXTO 3a SERIE   ALUNO</xProd>
                     <NCM>49019900</NCM>
                     <CFOP>6101</CFOP>
