@@ -37,7 +37,7 @@ module RubyDanfe
       @pdf.ibox 2.27, 7.67, 0.25, 0.54
       @pdf.ibox 2.27, 7.67, 0.25, 0.74, '',
         @xml['emit/xNome'],
-        { :align => :center, :size => 9, :border => 0, :style => :bold }
+        { :align => :center, :size => 8, :border => 0, :style => :bold }
 
       fone = @xml['enderEmit/fone']
       unless fone.eql?('')
@@ -47,15 +47,15 @@ module RubyDanfe
           fone = @xml['enderEmit/fone'][0,4] + '-' + @xml['enderEmit/fone'][4,4]
         end
       end
-      @pdf.ibox 2.27, 7.67, 0.25, 1.20, '',
+      @pdf.ibox 2.27, 7.67, 0.25, 1.30, '',
         @xml['enderEmit/xLgr'] + ", " + @xml['enderEmit/nro'] + "\n" +
         @xml['enderEmit/xMun'] + " - " + @xml['enderEmit/UF'] + " " + @xml['enderEmit/xPais'] + "\n" +
         "Fone/Fax: " + fone,
-        { :align => :center, :size => 8, :border => 0, :style => :bold }
+        { :align => :center, :size => 6, :border => 0, :style => :bold }
 
       @pdf.ibox 2.27, 7.67, 0.25, 2.30, '',
         "CNPJ: " + Helper.format_cnpj(@xml['emit/CNPJ']) + "     " + "IE: " + @xml['emit/IE'],
-        { :align => :center, :size => 7, :border => 0, :style => :bold }
+        { :align => :center, :size => 6, :border => 0, :style => :bold }
     end
 
     def render_tipo_cte
@@ -369,15 +369,16 @@ module RubyDanfe
       #quantidade carga
       @pdf.ibox 0.90, 1.07, 0.25, 14.72, '', 'QTD.', { :size => 7, :align => :center, :style => :italic}
       @pdf.ibox 0.90, 1.07, 0.25, 15.02, '', 'CARGA', { :size => 7, :align => :center, :style => :italic, :border => 0}
-      @pdf.ibox 0.90, 3.50, 1.33, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
-      @pdf.ibox 0.90, 3.50, 4.83, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
-      @pdf.ibox 0.90, 3.50, 8.33, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
+      @pdf.ibox 0.90, 2.63, 1.33, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
+      @pdf.ibox 0.90, 2.63, 3.96, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
+      @pdf.ibox 0.90, 2.63, 6.59, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
+      @pdf.ibox 0.90, 2.63, 9.22, 14.72, 'QT./UN. MEDIDA', '', { :size => 7, :style => :italic }
       x = 1.33
       @xml.collect('xmlns', 'infQ') { |det|
         if !det.css('cUnid').text.eql?('00')
            desc = "#{det.css('qCarga').text} #{det.css('tpMed').text}"
-           @pdf.ibox 0.90, 3.50, x, 15.02, '', desc, { :size => 7, :style => :bold, :border => 0 }
-           x = x + 3.50
+           @pdf.ibox 0.90, 2.63, x, 15.02, '', desc, { :size => 7, :style => :bold, :border => 0 }
+           x = x + 2.63
         end
       }
     end

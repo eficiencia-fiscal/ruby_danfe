@@ -100,52 +100,69 @@ module RubyDanfe
 
     def render_faturas
       @pdf.ititle 0.42, 10.00, 0.25, 11.12, "FATURA / DUPLICATAS"
-      @pdf.ibox 0.85, 20.57, 0.25, 11.51
+      @pdf.ibox 1.55, 20.57, 0.25, 11.51
 
       x = 0.25
       y = 11.51
+
       @xml.collect('xmlns', 'dup') do |det|
-        @pdf.ibox 0.85, 2.12, x, y, '', 'Núm.:', { :size => 6, :border => 0, :style => :italic }
-        @pdf.ibox 0.85, 2.12, x + 0.70, y, '', det.css('nDup').text, { :size => 6, :border => 0 }
-        @pdf.ibox 0.85, 2.12, x, y + 0.20, '', 'Venc.:', { :size => 6, :border => 0, :style => :italic }
-        dtduplicata = det.css('dVenc').text
-        dtduplicata = dtduplicata[8,2] + '/' + dtduplicata[5, 2] + '/' + dtduplicata[0, 4]
-        @pdf.ibox 0.85, 2.12, x + 0.70, y + 0.20, '', dtduplicata, { :size => 6, :border => 0 }
-        @pdf.ibox 0.85, 2.12, x, y + 0.40, '', 'Valor: R$', { :size => 6, :border => 0, :style => :italic }
-        @pdf.inumeric 0.85, 1.25, x + 0.70, y + 0.40, '', det.css('vDup').text, { :size => 6, :border => 0 }
-        x = x + 2.30
+        if det.css('nDup').text.to_i <= 9
+
+          @pdf.ibox 0.85, 2.12, x, y, '', 'Núm.:', { :size => 6, :border => 0, :style => :italic }
+          @pdf.ibox 0.85, 2.12, x + 0.70, y, '', det.css('nDup').text, { :size => 6, :border => 0 }
+          @pdf.ibox 0.85, 2.12, x, y + 0.20, '', 'Venc.:', { :size => 6, :border => 0, :style => :italic }
+          dtduplicata = det.css('dVenc').text
+          dtduplicata = dtduplicata[8,2] + '/' + dtduplicata[5, 2] + '/' + dtduplicata[0, 4]
+          @pdf.ibox 0.85, 2.12, x + 0.70, y + 0.20, '', dtduplicata, { :size => 6, :border => 0 }
+          @pdf.ibox 0.85, 2.12, x, y + 0.40, '', 'Valor: R$', { :size => 6, :border => 0, :style => :italic }
+          @pdf.inumeric 0.85, 1.25, x + 0.70, y + 0.40, '', det.css('vDup').text, { :size => 6, :border => 0 }
+          x = x + 2.30
+        else  
+          x = 0.25
+          y = 12.26
+
+          @pdf.ibox 0.85, 2.12, x, y, '', 'Núm.:', { :size => 6, :border => 0, :style => :italic }
+          @pdf.ibox 0.85, 2.12, x + 0.70, y, '', det.css('nDup').text, { :size => 6, :border => 0 }
+          @pdf.ibox 0.85, 2.12, x, y + 0.20, '', 'Venc.:', { :size => 6, :border => 0, :style => :italic }
+          dtduplicata = det.css('dVenc').text
+          dtduplicata = dtduplicata[8,2] + '/' + dtduplicata[5, 2] + '/' + dtduplicata[0, 4]
+          @pdf.ibox 0.85, 2.12, x + 0.70, y + 0.20, '', dtduplicata, { :size => 6, :border => 0 }
+          @pdf.ibox 0.85, 2.12, x, y + 0.40, '', 'Valor: R$', { :size => 6, :border => 0, :style => :italic }
+          @pdf.inumeric 0.85, 1.25, x + 0.70, y + 0.40, '', det.css('vDup').text, { :size => 6, :border => 0 }
+          x = x + 2.30
+        end 
       end
     end
 
     def render_calculo_do_imposto
-      @pdf.ititle 0.42, 5.60, 0.25, 12.36, "CÁLCULO DO IMPOSTO"
+      @pdf.ititle 0.42, 5.60, 0.25, 13.06, "CÁLCULO DO IMPOSTO"
 
-      @pdf.inumeric 0.85, 4.06, 0.25, 12.78, "BASE DE CÁLCULO DO ICMS", @xml['ICMSTot/vBC']
-      @pdf.inumeric 0.85, 4.06, 4.31, 12.78, "VALOR DO ICMS", @xml['ICMSTot/vICMS']
-      @pdf.inumeric 0.85, 4.06, 8.37, 12.78, "BASE DE CÁLCULO DO ICMS ST", @xml['ICMSTot/vBCST']
-      @pdf.inumeric 0.85, 4.06, 12.43, 12.78, "VALOR DO ICMS ST", @xml['ICMSTot/vST']
-      @pdf.inumeric 0.85, 4.32, 16.49, 12.78, "VALOR TOTAL DOS PRODUTOS", @xml['ICMSTot/vProd']
-      @pdf.inumeric 0.85, 3.46, 0.25, 13.63, "VALOR DO FRETE", @xml['ICMSTot/vFrete']
-      @pdf.inumeric 0.85, 3.46, 3.71, 13.63, "VALOR DO SEGURO", @xml['ICMSTot/vSeg']
-      @pdf.inumeric 0.85, 3.46, 7.17, 13.63, "DESCONTO", @xml['ICMSTot/vDesc']
-      @pdf.inumeric 0.85, 3.46, 10.63, 13.63, "OUTRAS DESPESAS ACESSORIAS", @xml['ICMSTot/vOutro']
-      @pdf.inumeric 0.85, 3.46, 14.09, 13.63, "VALOR DO IPI", @xml['ICMSTot/vIPI']
-      @pdf.inumeric 0.85, 3.27, 17.55, 13.63, "VALOR TOTAL DA NOTA", @xml['ICMSTot/vNF'], :style => :bold
+      @pdf.inumeric 0.85, 4.06, 0.25, 13.45, "BASE DE CÁLCULO DO ICMS", @xml['ICMSTot/vBC']
+      @pdf.inumeric 0.85, 4.06, 4.31, 13.45, "VALOR DO ICMS", @xml['ICMSTot/vICMS']
+      @pdf.inumeric 0.85, 4.06, 8.37, 13.45, "BASE DE CÁLCULO DO ICMS ST", @xml['ICMSTot/vBCST']
+      @pdf.inumeric 0.85, 4.06, 12.43, 13.45, "VALOR DO ICMS ST", @xml['ICMSTot/vST']
+      @pdf.inumeric 0.85, 4.32, 16.49, 13.45, "VALOR TOTAL DOS PRODUTOS", @xml['ICMSTot/vProd']
+      @pdf.inumeric 0.85, 3.46, 0.25, 14.30, "VALOR DO FRETE", @xml['ICMSTot/vFrete']
+      @pdf.inumeric 0.85, 3.46, 3.71, 14.30, "VALOR DO SEGURO", @xml['ICMSTot/vSeg']
+      @pdf.inumeric 0.85, 3.46, 7.17, 14.30, "DESCONTO", @xml['ICMSTot/vDesc']
+      @pdf.inumeric 0.85, 3.46, 10.63, 14.30, "OUTRAS DESPESAS ACESSORIAS", @xml['ICMSTot/vOutro']
+      @pdf.inumeric 0.85, 3.46, 14.09, 14.30, "VALOR DO IPI", @xml['ICMSTot/vIPI']
+      @pdf.inumeric 0.85, 3.27, 17.55, 14.30, "VALOR TOTAL DA NOTA", @xml['ICMSTot/vNF'], :style => :bold
     end
 
     def render_transportadora_e_volumes
-      @pdf.ititle 0.42, 10.00, 0.25, 14.48, "TRANSPORTADOR / VOLUMES TRANSPORTADOS"
+      @pdf.ititle 0.42, 10.00, 0.25, 15.15, "TRANSPORTADOR / VOLUMES TRANSPORTADOS"
 
-      @pdf.ibox 0.85, 9.02, 0.25, 14.90, "RAZÃO SOCIAL", @xml['transporta/xNome']
-      @pdf.ibox 0.85, 2.79, 9.27, 14.90, "FRETE POR CONTA", descricao_modalidade_frete(@xml['transp/modFrete'])
-      @pdf.ibox 0.85, 1.78, 12.06, 14.90, "CODIGO ANTT", @xml['veicTransp/RNTC']
-      @pdf.ibox 0.85, 2.29, 13.84, 14.90, "PLACA DO VEÍCULO", @xml['veicTransp/placa']
-      @pdf.ibox 0.85, 0.76, 16.13, 14.90, "UF", @xml['veicTransp/UF']
-      @pdf.ibox 0.85, 3.94, 16.89, 14.90, "CNPJ/CPF", @xml['transporta/CNPJ']
-      @pdf.ibox 0.85, 9.02, 0.25, 15.75, "ENDEREÇO", @xml['transporta/xEnder']
-      @pdf.ibox 0.85, 6.86, 9.27, 15.75, "MUNICÍPIO", @xml['transporta/xMun']
-      @pdf.ibox 0.85, 0.76, 16.13, 15.75, "UF", @xml['transporta/UF']
-      @pdf.ibox 0.85, 3.94, 16.89, 15.75, "INSCRIÇÂO ESTADUAL", @xml['transporta/IE']
+      @pdf.ibox 0.85, 9.02, 0.25, 15.50, "RAZÃO SOCIAL", @xml['transporta/xNome']
+      @pdf.ibox 0.85, 2.79, 9.27, 15.50, "FRETE POR CONTA", descricao_modalidade_frete(@xml['transp/modFrete'])
+      @pdf.ibox 0.85, 1.78, 12.06, 15.50, "CODIGO ANTT", @xml['veicTransp/RNTC']
+      @pdf.ibox 0.85, 2.29, 13.84, 15.50, "PLACA DO VEÍCULO", @xml['veicTransp/placa']
+      @pdf.ibox 0.85, 0.76, 16.13, 15.50, "UF", @xml['veicTransp/UF']
+      @pdf.ibox 0.85, 3.94, 16.89, 15.50, "CNPJ/CPF", @xml['transporta/CNPJ']
+      @pdf.ibox 0.85, 9.02, 0.25, 16.35, "ENDEREÇO", @xml['transporta/xEnder']
+      @pdf.ibox 0.85, 6.86, 9.27, 16.35, "MUNICÍPIO", @xml['transporta/xMun']
+      @pdf.ibox 0.85, 0.76, 16.13, 16.35, "UF", @xml['transporta/UF']
+      @pdf.ibox 0.85, 3.94, 16.89, 16.35, "INSCRIÇÂO ESTADUAL", @xml['transporta/IE']
 
       @vol = 0
 
@@ -167,25 +184,25 @@ module RubyDanfe
       end
 
       if @vol == 0
-        @pdf.ibox 0.85, 2.80, 0.25, 16.60, "QUANTIDADE"
-        @pdf.ibox 0.85, 5.00, 3.05, 16.60, "ESPÉCIE"
-        @pdf.ibox 0.85, 3.05, 8.05, 16.60, "MARCA"
-        @pdf.ibox 0.85, 3.00, 11.10, 16.60, "NUMERAÇÃO"
-        @pdf.ibox 0.85, 3.43, 14.10, 16.60, "PESO BRUTO"
-        @pdf.ibox 0.85, 3.30, 17.53, 16.60, "PESO LÍQUIDO"
+        @pdf.ibox 0.85, 2.80, 0.25, 17.20, "QUANTIDADE"
+        @pdf.ibox 0.85, 5.00, 3.05, 17.20, "ESPÉCIE"
+        @pdf.ibox 0.85, 3.05, 8.05, 17.20, "MARCA"
+        @pdf.ibox 0.85, 3.00, 11.10, 17.20, "NUMERAÇÃO"
+        @pdf.ibox 0.85, 3.43, 14.10, 17.20, "PESO BRUTO"
+        @pdf.ibox 0.85, 3.30, 17.53, 17.20, "PESO LÍQUIDO"
       else
-        @pdf.ibox 0.85, 2.80, 0.25, 16.60, "QUANTIDADE", (quantidade.round == quantidade ? quantidade.to_i : quantidade).to_s
-        @pdf.ibox 0.85, 5.00, 3.05, 16.60, "ESPÉCIE", especie
-        @pdf.ibox 0.85, 3.05, 8.05, 16.60, "MARCA", marca
-        @pdf.ibox 0.85, 3.00, 11.10, 16.60, "NUMERAÇÃO"
-        @pdf.inumeric 0.85, 3.43, 14.10, 16.60, "PESO BRUTO", peso_bruto.to_s, {:decimals => 3}
-        @pdf.inumeric 0.85, 3.30, 17.53, 16.60, "PESO LÍQUIDO", peso_liquido.to_s, {:decimals => 3}
+        @pdf.ibox 0.85, 2.80, 0.25, 17.20, "QUANTIDADE", (quantidade.round == quantidade ? quantidade.to_i : quantidade).to_s
+        @pdf.ibox 0.85, 5.00, 3.05, 17.20, "ESPÉCIE", especie
+        @pdf.ibox 0.85, 3.05, 8.05, 17.20, "MARCA", marca
+        @pdf.ibox 0.85, 3.00, 11.10, 17.20, "NUMERAÇÃO"
+        @pdf.inumeric 0.85, 3.43, 14.10, 17.20, "PESO BRUTO", peso_bruto.to_s, {:decimals => 3}
+        @pdf.inumeric 0.85, 3.30, 17.53, 17.20, "PESO LÍQUIDO", peso_liquido.to_s, {:decimals => 3}
       end
     end
 
     def render_cabecalho_dos_produtos(page_number)
-      base_y = page_number == 1 ? 17.45 : 8.2
-      height = page_number == 1 ? 6.70 : 17.2
+      base_y = page_number == 1 ? 18.05 : 8.2
+      height = page_number == 1 ? 6.2 : 17.20
 
       @pdf.ititle 0.42, 10.00, 0.25, base_y, "DADOS DO PRODUTO / SERVIÇO"
 
@@ -308,7 +325,7 @@ module RubyDanfe
             table.column(0..13).borders = [:top]
             table.before_rendering_page do |page|
               if @pdf.page_number == 1
-                @pdf.bounds.instance_variable_set(:@y, (22.2).cm)
+                @pdf.bounds.instance_variable_set(:@y, (21.6).cm)
                 @pdf.bounds.instance_variable_set(:@height, (16.8).cm)
               else
                 @pdf.bounds.instance_variable_set(:@y, (21).cm)

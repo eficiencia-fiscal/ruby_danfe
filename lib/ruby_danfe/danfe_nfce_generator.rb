@@ -148,7 +148,7 @@ module RubyDanfe
       numero_nota = @xml.css('nNF').text
       serie = @xml.css('serie').text
       data = @xml.css('dhEmi').text
-      data_emissao = Date.parse(data).strftime('%d/%m/%Y %I:%M:%S')
+      data_emissao = DateTime.parse(data).strftime('%d/%m/%Y %I:%M:%S')
 
       chave_acesso = get_chave
       cabecalho = ""
